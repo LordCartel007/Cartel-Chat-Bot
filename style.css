@@ -1,0 +1,15 @@
+/* importing google fonts poppins */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", serif;
+}
+
+:root {
+  /* Dark theme colors */
+  --text-color: #edf3ff;
+}
