@@ -21,25 +21,25 @@
       </header>
       <!--  Suggestions list-->
       <ul class="suggestions">
-        <li class="suggestions-items">
+        <li class="suggestions-item">
           <p class="text">
             Design a home office setup for remote work under $500.
           </p>
           <span class="material-symbols-rounded"> draw </span>
         </li>
-        <li class="suggestions-items">
+        <li class="suggestions-item">
           <p class="text">
             How can i level my web development expertise in 2025?
           </p>
           <span class="material-symbols-rounded"> lightbulb </span>
         </li>
-        <li class="suggestions-items">
+        <li class="suggestions-item">
           <p class="text">
             Suggest some useful tools for debugging JavaScript code.
           </p>
           <span class="material-symbols-rounded"> explore </span>
         </li>
-        <li class="suggestions-items">
+        <li class="suggestions-item">
           <p class="text">
             Create a React JS components for the simple todo list app.
           </p>
@@ -47,12 +47,30 @@
         </li>
       </ul>
 
+      <!-- chats container -->
+      <div class="chats-container">
+        <div class="message user-message">
+          <p class="message-text">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Repudiandae, cumque.
+          </p>
+        </div>
+        <div class="message bot-message">
+          <img src="gemini-pic.svg" alt="bot" class="avatar" />
+          <p class="message-text">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.Repudiandae,
+            cumque. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Repudiandae, cumque.
+          </p>
+        </div>
+      </div>
+
       <div class="prompt-container">
         <div class="prompt-wrapper">
           <form action="#" class="promt-form">
             <input
               type="text"
-              placeholder="Ask Gemini"
+              placeholder="Ask Cartel"
               class="prompt-input"
               required
             />
