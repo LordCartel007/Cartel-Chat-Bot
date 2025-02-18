@@ -1,6 +1,6 @@
 /* importing google fonts poppins */
 
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 * {
   margin: 0;
@@ -12,4 +12,46 @@
 :root {
   /* Dark theme colors */
   --text-color: #edf3ff;
+  --subheading-color: #97a7ca;
+  --placeholder-color: #c3cdde;
+  --primary-color: #101623;
+  --secondary-color: #283045;
+  --secondary-hover-color: #333e58;
+  --scrollbar-color: #626a7f;
+}
+
+body {
+  color: var(--text-color);
+  background: var(--primary-color);
+}
+
+.container {
+  padding: 32px 0 60px;
+}
+
+.container
+  :where(.app-header, .suggestions, .prompt-wrapper, .disclaimer-text) {
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 20px;
+  max-width: 980px;
+}
+
+.container .app-header {
+  margin-top: 4vh;
+}
+
+.app-header .heading {
+  font-size: 3rem;
+  width: fit-content;
+  background: linear-gradient(to right, #1d7efd, #8f6fff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.app-header .sub-heading {
+  font-size: 2.6rem;
+  margin-top: -5px;
+  color: var(--subheading-color);
 }
