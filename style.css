@@ -25,8 +25,12 @@ body {
   background: var(--primary-color);
 }
 
+/* making the text not to stay behind the input container */
 .container {
   padding: 32px 0 60px;
+  overflow-y: auto;
+  max-height: calc(100vh - 127px);
+  scrollbar-color: var(--scrollbar-color) transparent;
 }
 
 .container
@@ -125,14 +129,24 @@ body {
 }
 
 /* chats container styling*/
+.container .chats-container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  overflow-y: auto; /* Enables scrolling */
+  scroll-behavior: smooth; /* Smooth scrolling */
+}
+
 .chats-container .message {
   display: flex;
   gap: 11px;
   align-items: center;
+  overflow-y: auto;
+  scroll-behavior: smooth; /* Enables smooth scrolling */
 }
 
 .chats-container .bot-message .avatar {
-  margin-top: 30px;
+  margin-top: 12px;
   height: 43px;
   width: 43px;
   flex-shrink: 0;
@@ -144,12 +158,26 @@ body {
   border: 1px solid var(--secondary-hover-color);
 }
 
+.chats-container .bot-message.loading .avatar {
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .chats-container .message .message-text {
   word-wrap: break-word;
-  padding: 3px 16px;
-  white-space: pre-line;
 
-  padding: 3px 16px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.chats-container .bot-message {
+  margin: 9px auto;
+  padding-bottom: 80px; /* Ensures last message is above input field */
 }
 
 .chats-container .user-message {
@@ -158,10 +186,11 @@ body {
 }
 
 .chats-container .user-message .message-text {
-  padding: 3px 12px 16px;
   max-width: 75%;
   border-radius: 13px 13px 3px 13px;
   background: var(--secondary-color);
+  word-wrap: break-word; /* Prevents overflow */
+  text-align: start;
 }
 
 /* prompt container stylings */
@@ -174,21 +203,21 @@ body {
   background: var(--primary-color);
 }
 
-.prompt-container :where(.prompt-wrapper, .promt-form, .prompt-actions) {
+.prompt-container :where(.prompt-wrapper, .prompt-form, .prompt-actions) {
   display: flex;
   gap: 12px;
   height: 56px;
   align-items: center;
 }
 
-.prompt-wrapper .promt-form {
+.prompt-wrapper .prompt-form {
   width: 100%;
   height: 100%;
   border-radius: 130px;
   background: var(--secondary-color);
 }
 
-.promt-form .prompt-input {
+.prompt-form .prompt-input {
   height: 100%;
   width: 100%;
   background: none;
@@ -199,7 +228,7 @@ body {
   color: var(--text-color);
 }
 
-.promt-form .prompt-input::placeholder {
+.prompt-form .prompt-input::placeholder {
   color: var(--placeholder-color);
 }
 
@@ -220,27 +249,27 @@ body {
   background: var(--secondary-hover-color);
 }
 
-.promt-form .prompt-actions {
+.prompt-form .prompt-actions {
   gap: 5px;
   margin-right: 7px;
 }
 
-.promt-form .prompt-actions button {
+.prompt-form .prompt-actions button {
   height: 45px;
   width: 45px;
 }
 
-.promt-form #send-prompt-btn {
+.prompt-form #send-prompt-btn {
   color: #fff;
   display: none;
   background: #1d7efd;
 }
 /* the send prompt button will only be displayed when the input field contains a value */
-.promt-form .prompt-input:valid ~ .prompt-actions #send-prompt-btn {
+.prompt-form .prompt-input:valid ~ .prompt-actions #send-prompt-btn {
   display: block;
 }
 
-.promt-form #send-prompt-btn:hover {
+.prompt-form #send-prompt-btn:hover {
   background: #0264e3;
 }
 .prompt-container .disclaimer-text {
