@@ -12,7 +12,7 @@ let userMessage = "";
 // storing every bot and user conversation so the bot can know the chat history
 const chatHistory = [];
 
-// function to create a message element
+// function to create a message element with the given content and classes
 const createMsgElement = (content, ...classes) => {
   const div = document.createElement("div");
   div.classList.add("message", ...classes);
