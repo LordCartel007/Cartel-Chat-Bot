@@ -61,13 +61,39 @@
               required
             />
             <div class="prompt-actions">
-              <button
-                id="add-file-btn"
-                type="button"
-                class="material-symbols-rounded"
-              >
-                attach_file
-              </button>
+              <!-- File Upload Wrapper -->
+              <div class="file-upload-wrapper">
+                <img src="#" alt="" class="file-preview" />
+                <!-- setting  the image files type germini accepts-->
+                <input
+                  type="file"
+                  accept="image/*, .pdf, .txt, .csv"
+                  id="file-input"
+                  hidden
+                />
+                <button
+                  type="button"
+                  class="file-icon material-symbols-rounded"
+                >
+                  description
+                </button>
+
+                <button
+                  id="add-file-btn"
+                  type="button"
+                  class="material-symbols-rounded"
+                >
+                  attach_file
+                </button>
+
+                <button
+                  id="cancel-file-btn"
+                  type="button"
+                  class="material-symbols-rounded"
+                >
+                  close
+                </button>
+              </div>
 
               <button id="send-prompt-btn" class="material-symbols-rounded">
                 arrow_upward

@@ -1,7 +1,8 @@
 const container = document.querySelector(".container");
 const chatsContainer = document.querySelector(".chats-container");
 const promptForm = document.querySelector(".prompt-form");
-const promptInput = document.querySelector(".prompt-input");
+const promptInput = promptForm.querySelector(".prompt-input");
+const fileInput = promptForm.querySelector("#file-input");
 
 // API KEY SETUP
 const API_KEY = "AIzaSyDv92d7AZgqgMMdutLtx9FL2tiBFhbfJ-E";
@@ -98,3 +99,6 @@ const handleFormSubmit = (e) => {
 };
 
 promptForm.addEventListener("submit", handleFormSubmit);
+promptForm
+  .querySelector("#add-file-btn")
+  .addEventListener("click", () => fileInput.click());
