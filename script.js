@@ -48,9 +48,63 @@ const typingEffect = (text, textElement, botMsgDiv) => {
   }, 40);
 };
 // Make the api call and generate the bot response
+// const generateResponse = async (botMsgDiv) => {
+//   const textElement = botMsgDiv.querySelector(".message-text");
+//   controller = new AbortController();
+//   // Add user message and file data to chat history
+//   chatHistory.push({
+//     role: "user",
+//     parts: [
+//       { text: userData.message },
+//       ...(userData.file.data
+//         ? [
+//             {
+//               inline_data: (({ fileName, isImage, ...rest }) => rest)(
+//                 userData.file
+//               ),
+//             },
+//           ]
+//         : []),
+//     ],
+//   });
+//   try {
+//     const response = await fetch(API_URL, {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ contents: chatHistory }),
+//       signal: controller.signal,
+//     });
+//     const data = await response.json();
+//     if (!response.ok) throw new Error(data.error.message);
+
+//     // Process the response text and display with typing effect
+//     const responseText = data.candidates[0].content.parts[0].text
+//       .replace(/\*\*([^*]+)\*\*/g, "$1")
+//       .trim();
+//     typingEffect(responseText, textElement, botMsgDiv);
+//     // adding the models response to the chat history for better interactions
+//     chatHistory.push({
+//       role: "model",
+//       parts: [{ text: responseText }],
+//     });
+//     console.log(chatHistory);
+//   } catch (error) {
+//     textElement.style.color = "#d62939";
+//     textElement.textContent =
+//       error.name === "AbortError"
+//         ? "Request generation stopped"
+//         : error.message;
+//     botMsgDiv.classList.remove("loading");
+//     document.body.classList.remove("bot-responding");
+//   } finally {
+//     userData.file = {};
+//     scrollToBottom();
+//   }
+// };
 const generateResponse = async (botMsgDiv) => {
   const textElement = botMsgDiv.querySelector(".message-text");
   controller = new AbortController();
+
   // Add user message and file data to chat history
   chatHistory.push({
     role: "user",
@@ -67,6 +121,7 @@ const generateResponse = async (botMsgDiv) => {
         : []),
     ],
   });
+
   try {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -74,6 +129,7 @@ const generateResponse = async (botMsgDiv) => {
       body: JSON.stringify({ contents: chatHistory }),
       signal: controller.signal,
     });
+
     const data = await response.json();
     if (!response.ok) throw new Error(data.error.message);
 
@@ -81,13 +137,19 @@ const generateResponse = async (botMsgDiv) => {
     const responseText = data.candidates[0].content.parts[0].text
       .replace(/\*\*([^*]+)\*\*/g, "$1")
       .trim();
+
     typingEffect(responseText, textElement, botMsgDiv);
-    // adding the models response to the chat history for better interactions
+
+    // Add the model's response to chat history
     chatHistory.push({
       role: "model",
       parts: [{ text: responseText }],
     });
+
     console.log(chatHistory);
+
+    // Speak the AI's response
+    speak(responseText);
   } catch (error) {
     textElement.style.color = "#d62939";
     textElement.textContent =
@@ -231,3 +293,142 @@ promptForm.addEventListener("submit", handleFormSubmit);
 promptForm
   .querySelector("#add-file-btn")
   .addEventListener("click", () => fileInput.click());
+
+// VOICE AI
+
+// Function to get available voices
+
+const recognition = new (window.SpeechRecognition ||
+  window.webkitSpeechRecognition)();
+recognition.lang = "en-US"; // Set language for speech recognition
+
+// Start listening for voice input
+function startListening() {
+  document.getElementById("output").textContent = "Listening...";
+  recognition.start(); // Start speech recognition
+}
+
+// Event listener when recognition results are available
+// recognition.onresult = async (event) => {
+//   const transcript = event.results[0][0].transcript;
+//   document.getElementById("output").textContent = "You: " + transcript;
+//   console.log("User said:", transcript); // Log the spoken text
+
+//   try {
+//     const aiResponse = await askGemini(transcript); // Get response from Gemini AI
+//     speak(aiResponse); // Convert AI response to speech
+//   } catch (error) {
+//     console.error("Error with Gemini API request:", error);
+//     speak("Sorry, there was an issue processing your request.");
+//   }
+// };
+
+recognition.onresult = async (event) => {
+  const transcript = event.results[0][0].transcript;
+  promptInput.value = transcript; // Set voice input in the text field
+  promptForm.dispatchEvent(new Event("submit")); // Submit like a typed message
+};
+
+// Error handling for speech recognition
+recognition.onerror = function (event) {
+  console.error("Speech recognition error:", event.error);
+  document.getElementById("output").textContent =
+    "Error occurred: " + event.error;
+};
+
+let conversationHistory = []; // Stores chat history
+
+async function askGemini(userInput) {
+  // Add user message to history
+  conversationHistory.push({
+    role: "user",
+    parts: [{ text: userInput }],
+  });
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: conversationHistory, // Send the entire conversation
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log("Full API Response:", data); // Log full response to debug
+    const aiReply =
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Sorry, I couldn't understand.";
+
+    // Add AI response to history
+    conversationHistory.push({
+      role: "model",
+      parts: [{ text: aiReply }],
+    });
+
+    document.getElementById("output").textContent = "AI: " + aiReply;
+    console.log("AI Response:", aiReply);
+
+    return aiReply;
+  } catch (error) {
+    console.error("Error with Gemini API request:", error);
+    return "Sorry, there was an issue processing your request.";
+  }
+}
+
+function getVoices() {
+  return new Promise((resolve) => {
+    let voices = speechSynthesis.getVoices();
+    if (voices.length) {
+      resolve(voices);
+      return;
+    }
+    speechSynthesis.onvoiceschanged = () => {
+      voices = speechSynthesis.getVoices();
+      resolve(voices);
+    };
+  });
+}
+getVoices().then((voices) => console.log(voices.map((v) => v.name)));
+
+// Function to speak with a specific voice
+async function speak(
+  text,
+  voiceName = "Microsoft Zira - English (United States)"
+) {
+  const voices = await getVoices();
+  const utterance = new SpeechSynthesisUtterance(
+    text.replace(/\*/g, "") // Remove asterisks from text
+  );
+
+  // Find and set the desired voice
+  const selectedVoice = voices.find((voice) => voice.name === voiceName);
+  if (selectedVoice) {
+    utterance.voice = selectedVoice;
+  } else {
+    console.warn(`Voice "${voiceName}" not found, using default.`);
+  }
+
+  speechSynthesis.speak(utterance);
+}
+
+//   Function to speak out the text using SpeechSynthesisUtterance
+// function speak(text) {
+//   // Replace any asterisks (*) with an empty string, effectively ignoring them
+//   const cleanedText = text.replace(/\*/g, ""); // Removes all asterisks
+
+//   const speech = new SpeechSynthesisUtterance(cleanedText);
+//   speech.rate = 1;
+//   speech.pitch = 1;
+//   speech.volume = 1;
+//   window.speechSynthesis.speak(speech);
+// }
+
+// Function to stop any ongoing speech synthesis
+function stopSpeaking() {
+  window.speechSynthesis.cancel(); // Cancel ongoing speech
+  document.getElementById("output").textContent = "Speech stopped.";
+}

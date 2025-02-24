@@ -72,6 +72,15 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.heading-top {
+  font-size: 3rem;
+  width: fit-content;
+  background: linear-gradient(to right, #1d7efd, #ffe600);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 30px;
+}
 .app-header .sub-heading {
   font-size: 2.6rem;
   margin-top: -5px;
@@ -82,10 +91,11 @@ body {
 .container .suggestions {
   display: flex;
   gap: 15px;
-  margin-top: 9.5vh;
+  margin-top: 2vh;
   list-style: none;
   overflow-x: auto;
   scrollbar-width: none;
+  margin-bottom: 10vh;
 }
 
 .suggestions .suggestions-item {
@@ -106,7 +116,7 @@ body {
   background: var(--secondary-hover-color);
 }
 
-/* making the suggestion box disappear if chat is not active */
+/* making the suggestion box disappear if chat is  active */
 body.chats-active .container :where(.app-header, .suggestions) {
   display: none;
 }
@@ -362,7 +372,40 @@ body.bot-responding .prompt-form #stop-response-btn {
   .prompt-form .file-upload-wrapper.active #cancel-file-btn {
     opacity: 0;
   }
-  .prompt-wrapper.hide-controls :where(#theme-toggle-btn, #delete-chats-btn) {
+  .prompt-wrapper.hide-controls
+    :where(
+      #theme-toggle-btn,
+      #delete-chats-btn,
+      #startListening-btn,
+      #stop-speaking-btn,
+      #output
+    ) {
     display: none;
   }
+}
+
+/* ai assistant */
+.input-assistant {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.content {
+  margin-top: 9px;
+  font-size: 20px;
+}
+
+.top-assistant {
+  padding-left: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.talk {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: linear-gradient(to right, #1d7efd, #9e9121);
+  border: 5px solid #f3df00;
 }
