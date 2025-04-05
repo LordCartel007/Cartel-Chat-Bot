@@ -257,6 +257,8 @@ body.chats-active .container :where(.app-header, .suggestions) {
   height: 100%;
   border-radius: 130px;
   background: var(--secondary-color);
+  @media (max-width: 768px) {
+  }
 }
 
 .prompt-form .prompt-input {
@@ -285,6 +287,12 @@ body.chats-active .container :where(.app-header, .suggestions) {
   color: var(--text-color);
   background: var(--secondary-color);
   transition: 0.3s ease;
+  /* adjusting the buttons size on small screen  */
+  @media (max-width: 768px) {
+    height: 40px;
+    width: 40px;
+    font-size: 1.1rem;
+  }
 }
 
 .prompt-wrapper :is(button:hover, .file-icon, #cancel-file-btn) {
@@ -366,7 +374,7 @@ body.bot-responding .prompt-form #stop-response-btn {
   }
   .app-header :is(.heading, .sub-heading) {
     font-size: 2rem;
-    line-height: 1.4;
+    line-height: 50px;
   }
 
   .prompt-form .file-upload-wrapper.active #cancel-file-btn {
@@ -408,4 +416,10 @@ body.bot-responding .prompt-form #stop-response-btn {
   border-radius: 50%;
   background: linear-gradient(to right, #1d7efd, #9e9121);
   border: 5px solid #f3df00;
+}
+
+#output {
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
